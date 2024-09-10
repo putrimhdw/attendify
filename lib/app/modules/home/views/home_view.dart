@@ -28,7 +28,7 @@ class HomeView extends GetView<HomeController> {
           onDestinationSelected: controller.changeTabIndex,
           destinations: const [
             NavigationDestination(
-                icon: Icon(Icons.schedule), label: "Schedule"),
+                icon: Icon(Icons.schedule), label: "Attendance"),
             NavigationDestination(
                 icon: Icon(Icons.edit_note), label: "Request"),
             NavigationDestination(icon: Icon(Icons.person), label: "Profile"),

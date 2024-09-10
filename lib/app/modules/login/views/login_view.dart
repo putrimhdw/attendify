@@ -1,3 +1,4 @@
+import 'package:attendify/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -76,7 +77,9 @@ class LoginView extends GetView<LoginController> {
                             ),
                           ),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Get.toNamed(Routes.FORGOT_PASSWORD);
+                            },
                             child: Text("Forgot Password"),
                           ),
                           SizedBox(

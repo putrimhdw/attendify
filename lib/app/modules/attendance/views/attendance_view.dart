@@ -153,23 +153,12 @@ class AttendanceView extends GetView<AttendanceController> {
                       SizedBox(
                         height: 25,
                       ),
-                      Row(
-                        children: [
-                          Expanded(child: Text("Attendance History")),
-                          TextButton(
-                            onPressed: () {},
-                            child: Text(
-                              "See more",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelSmall
-                                  ?.apply(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primary),
-                            ),
-                          )
-                        ],
+                      Text(
+                        "Attendance History",
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      SizedBox(
+                        height: 10,
                       ),
                       StreamBuilder<List<AttendStatus>>(
                           stream: controller.getAttendLogs(),
