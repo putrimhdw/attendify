@@ -89,6 +89,15 @@ class LoginView extends GetView<LoginController> {
                               child: Text("Sign In"),
                             ),
                           ),
+                          Obx(() => controller.useBiometrics.value
+                              ? SizedBox(
+                                  width: Get.width,
+                                  child: FilledButton(
+                                    onPressed: controller.tryBiometricLogin,
+                                    child: Text("Sign in Using Biometricts"),
+                                  ),
+                                )
+                              : SizedBox())
                         ],
                       ),
                     ),

@@ -3,12 +3,20 @@ import 'package:attendify/app/routes/app_pages.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:local_auth/local_auth.dart';
 
 class ProfileController extends GetxController {
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   FirebaseStorage storage = FirebaseStorage.instance;
+
+  final storageSecure = const FlutterSecureStorage();
+  final LocalAuthentication localAuth = LocalAuthentication();
+
+  var useBiometrics = false.obs;
 
   var isLoading = false.obs;
   late UserRelated user;
@@ -23,6 +31,7 @@ class ProfileController extends GetxController {
     });
 
     getUserData();
+    loadBiometricPreference();
   }
 
   @override
@@ -63,6 +72,38 @@ class ProfileController extends GetxController {
           job: snapshot.data()?["job"] ?? "-",
           email: auth.currentUser?.email ?? "");
     });
+  }
+
+  Future<void> loadBiometricPreference() async {
+    final value = await storageSecure.read(key: 'use_biometrics');
+    useBiometrics.value = value == 'true';
+  }
+
+  Future<void> toggleBiometrics(bool value) async {
+    if (value) {
+      final isAvailable = await localAuth.canCheckBiometrics;
+      if (!isAvailable) {
+        Get.snackbar("Biometric", "Biometric not available on this device");
+        return;
+      }
+
+      try {
+        final didAuthenticate = await localAuth.authenticate(
+          localizedReason: 'Enable biometric login',
+          options: const AuthenticationOptions(),
+        );
+        if (didAuthenticate) {
+          // Save credentials (email/password) securely if needed
+          await storageSecure.write(key: 'use_biometrics', value: 'true');
+          useBiometrics.value = true;
+        }
+      } on PlatformException catch (e) {
+        Get.snackbar("Not Supported", e.toString());
+      }
+    } else {
+      await storageSecure.write(key: 'use_biometrics', value: 'false');
+      useBiometrics.value = false;
+    }
   }
 
   void onLogout() {

@@ -126,7 +126,54 @@ class ProfileView extends GetView<ProfileController> {
                                 Icon(Icons.chevron_right)
                               ],
                             ),
-                          )
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Text(
+                      "Settings",
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 10,
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color:
+                                Theme.of(context).colorScheme.outlineVariant),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Icon(Icons.fingerprint),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(child: Text("Use Biometrics")),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Obx(
+                                () => Switch(
+                                  value: controller.useBiometrics.value,
+                                  onChanged: (bool value) {
+                                    controller.toggleBiometrics(value);
+                                  },
+                                ),
+                              )
+                            ],
+                          ),
                         ],
                       ),
                     ),

@@ -17,7 +17,7 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     Future.delayed(Duration.zero, () {
       if (!controller.isAuth.value) {
-        Get.offAllNamed(Routes.LOGIN);
+        Get.offAndToNamed(Routes.LOGIN);
       }
     });
 
